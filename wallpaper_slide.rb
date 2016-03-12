@@ -1,21 +1,12 @@
 class WallpaperSlide
 
-	def initialize(path)
-		load_wallpapers_in path
-	end
-
-	def load_wallpapers_in(path)
-		@files = Dir["#{path}*.{jpg,png}"]
-	end
-
-	def random_picture
-		idx = rand(1..@files.length)
-		return @files[idx-1]
+	def initialize(folder)
+		load_wallpapers_in folder
 	end
 
 	def change_wallpaper
 		if @files.empty?
-			puts 'Wallpapers not found! Maybe the path is wrong. Finish it with a slash "/".'
+			puts "Wallpapers not found in '#{@path}'. Maybe the path is wrong. It has to be ended it with a slash '/'."
 			return
 		end
 
@@ -23,11 +14,31 @@ class WallpaperSlide
 		puts picture
 		system "gsettings set org.gnome.desktop.background picture-uri #{picture}"
 	end
+
+	private
+
+	def load_wallpapers_in(folder)
+		@path = folder || "#{File.dirname(__FILE__)}/pictures/"
+		@files = Dir["#{@path}*.{jpg,png}"]
+	end
+
+	def random_picture
+		idx = rand(1..@files.length)
+		return @files[idx-1]
+	end
+
 end
 
-app = WallpaperSlide.new ARGV[0]
+
+options = Hash.new
+ARGV.each { |arg| options.merge!( Hash[ [ arg.split("=") ] ] )}
+
+folder = options["--folder"]
+time = options["--time"] || 3600
+
+app = WallpaperSlide.new folder
 
 loop do
 	app.change_wallpaper
-	sleep 3600
+	sleep time.to_i
 end
