@@ -1,5 +1,5 @@
 # WallSlide
-WallSlide is a script that changes gnome wallpaper every hour. 
+WallSlide is a script that changes gnome wallpaper every time you chouse. 
 
 __Important:__ only _"jpg"_ and _"png"_ extensions are supported.
 
@@ -9,10 +9,19 @@ You can clone this repo or just download the files. Than, just start the job.
 $ git clone http://...
 ```
 ## Usage
-Start the job typing the path where you keey your wallpapers.
+The simplest way is coping your wallpapers into ./pictures/ folder and start the job without args. Wallpaper will be changed every hour.
 ```sh
 $ cd wallslide/
-$ ./wallslide start -- /my/folder/pictures/path/
+$ cp ~/Pictures/*.jpg ./pictures/
+$ ./wallslide start
+```
+You can choose the change frequency in seconds. For example, if you want to change the wallpaper every 30 seconds:
+```sh
+$ ./wallslide start -- --time=30
+```
+And you can choose an other folder to collect pictures, as below:
+```sh
+$ ./wallslide start -- --folder=/my/pictures/folder/
 ```
 And if you want stop the job...
 ```sh
